@@ -1,0 +1,11 @@
+riptide 1.8 changelog (keeping this as 1.8 because i fixed errors that people were gettign)
+
+- Fixed all the Errors
+
+
+Note:   Extract the Custom Models and place them in your in SteamLibrary\steamapps\common\Counter-Strike Global Offensive\csgo\models\custom_player folder
+	You can change the Models in Esp.cpp at "void CEsp::CustomModels(CBaseEntity* entity)"
+
+Note:   Download more skyboxes at https://mega.nz/#!WIkWzC4a!WoiJgNyCM-EU9-etV2tZN2HuT1XC9JrBzgAX4yxPWFY
+	put skyboxes in SteamLibrary\steamapps\common\Counter-Strike Global Offensive\csgo\materials\skybox
+
