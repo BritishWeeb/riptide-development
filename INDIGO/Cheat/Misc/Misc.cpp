@@ -27,7 +27,8 @@ void CMisc::OnRender()
 
 			if (WorldToScreen(end, endScreen) && IsLocalAlive())
 			{
-				g_pRender->DrawFillBox(punch_x - 1, punch_y - 1, 2, 2, Color::Green());
+				g_pRender->DrawLine(punch_x - 4, punch_y, punch_x + 4, punch_y, Color::White());
+				g_pRender->DrawLine(punch_x, punch_y - 4, punch_x, punch_y + 4, Color::White());
 			}
 		}
 	}
@@ -40,7 +41,7 @@ void CMisc::OnCreateMove(CUserCmd* pCmd)
 	{
 		ConVar* sv_cheats = Interfaces::GetConVar()->FindVar("sv_cheats");
 		SpoofedConvar* sv_cheats_spoofed = new SpoofedConvar(sv_cheats);
-		sv_cheats_spoofed->SetInt(1);
+		sv_cheats_spoofed->SetInt(0);
 
 		Interfaces::Engine()->ClientCmd_Unrestricted2("net_fakeloss 3");
 		Interfaces::Engine()->ClientCmd_Unrestricted2("net_fakelag 75");

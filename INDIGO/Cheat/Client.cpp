@@ -78,7 +78,7 @@ namespace Client
 
 	bool Initialize(IDirect3DDevice9* pDevice)
 	{
-		// CONSOLE ON OPEN - uncomment if you want it
+		// CONSOLE ON OPEN - comment if dont want it
 		
 		Interfaces::Engine()->ClientCmd_Unrestricted2("clear");
 		Interfaces::Engine()->ClientCmd_Unrestricted2("toggleconsole");
@@ -456,9 +456,9 @@ namespace Client
 	{
 
 
-		ImGui::SetNextWindowSize(ImVec2(840.f, 550.f));
+		ImGui::SetNextWindowSize(ImVec2(860, 570)); // format = width height
 		g_pGui->NameFont();
-		if (ImGui::Begin("riptide", &bIsGuiVisible, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize))
+		if (ImGui::Begin("riptide", &bIsGuiVisible, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse))
 			g_pRender->DrawFillBox(0, 0, iScreenWidth, iScreenHeight, Color(0, 0, 0, 170));
 		{
 
@@ -502,8 +502,8 @@ namespace Client
 				DWRITE_READING_DIRECTION_RIGHT_TO_LEFT
 			};
 
-
-			ImGui::TextColored(ImVec4{ 0.0f, 0.5f, 0.0f, 1.0f }, "Current FPS:%03d", get_fps());
+			g_pGui->bluefont();
+			ImGui::TextColored(ImVec4{ 0.0f, 0.5f, 0.0f, 1.0f }, "FPS:%03d", get_fps());
 			ImGui::Separator();
 			g_pGui->IconFont();
 			const char* tabNames[] = {
@@ -554,13 +554,13 @@ namespace Client
 				ImGui::BeginChild(1, ImVec2(-1, 509), true);
 				{
 
-					if (ImGui::Button("Aimbot", ImVec2(180.0f, 30.0f))) // <---- customize these to your liking.
+					if (ImGui::Button("aimbot", ImVec2(180.0f, 30.0f))) // <---- customize these to your liking.
 					{
 						otherpages = 0;
 					}
 					ImGui::SameLine(SpaceLineTitleTwo);
 
-					if (ImGui::Button("Trigger", ImVec2(180.0f, 30.0f))) // <---- again, customize to your liking.
+					if (ImGui::Button("triggerbot", ImVec2(180.0f, 30.0f))) // <---- again, customize to your liking.
 					{
 						otherpages = 1;
 					}
@@ -613,14 +613,14 @@ namespace Client
 
 						ImGui::Checkbox("backtrack", &Settings::Aimbot::aim_Backtrack);
 						if (ImGui::IsItemHovered())
-							ImGui::SetTooltip("stores previous locations of players in RAM and can tell server false hits");
+							ImGui::SetTooltip("you can teleport enemies to an older position and kill them");
 						ImGui::SameLine(SpaceLineOne);
 						ImGui::Checkbox("visualise ticks", &Settings::Aimbot::aim_DrawBacktrack);
 						if (ImGui::IsItemHovered())
 							ImGui::SetTooltip("renders ticks with potential to be backtracked");
-						ImGui::SliderInt("ticks", &Settings::Aimbot::aim_Backtracktickrate, 1, 12);
+						ImGui::SliderInt("tickrate", &Settings::Aimbot::aim_Backtracktickrate, 1, 12);
 						if (ImGui::IsItemHovered())
-							ImGui::SetTooltip("number of ticks to store in memory (higher ticks might cause FPS drops on shitty computers)");
+							ImGui::SetTooltip("set backtrack tick rate (higher number longer backtrack)");
 
 						ImGui::Spacing();
 						ImGui::Spacing();
@@ -640,10 +640,10 @@ namespace Client
 						ImGui::PushItemWidth(362.f);
 						ImGui::SliderInt("smoothing", &Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_Smooth, 1, 300);
 						if (ImGui::IsItemHovered())
-							ImGui::SetTooltip("humanizes aimbot's travel to enemy");
+							ImGui::SetTooltip("lower fov = snapping higher fov = looks real");
 						ImGui::SliderInt("fov", &Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_Fov, 1, 300);
 						if (ImGui::IsItemHovered())
-							ImGui::SetTooltip("area of influence of aimbot");
+							ImGui::SetTooltip("area that aimbot effects");
 						ImGui::PopItemWidth();
 
 						const char* AimFovType[] = { "dynamic" , "static" };
@@ -688,7 +688,7 @@ namespace Client
 						if (iWeaponID >= 10 && iWeaponID <= 30)
 						{
 							ImGui::PushItemWidth(362.f);
-							ImGui::SliderInt("Rcs", &Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_Rcs, 0, 100);
+							ImGui::SliderInt("rcs", &Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_Rcs, 0, 100);
 							if (ImGui::IsItemHovered())
 								ImGui::SetTooltip("amount of rcs");
 							ImGui::SliderInt("rcs fov", &Settings::Aimbot::weapon_aim_settings[iWeaponID].aim_RcsFov, 1, 300);
@@ -715,9 +715,9 @@ namespace Client
 						ImGui::BeginGroup();
 
 
-						const char* TriggerEnable[] = { "Disable" , "Fov" };
+						const char* TriggerEnable[] = { "disable" , "fov" };
 						ImGui::PushItemWidth(80.f);
-						ImGui::Combo("Enable", &Settings::Triggerbot::trigger_Enable, TriggerEnable, IM_ARRAYSIZE(TriggerEnable));
+						ImGui::Combo("enable", &Settings::Triggerbot::trigger_Enable, TriggerEnable, IM_ARRAYSIZE(TriggerEnable));
 						ImGui::PopItemWidth();
 						ImGui::SameLine();
 
@@ -725,19 +725,19 @@ namespace Client
 						ImGui::Separator();
 						ImGui::Spacing();
 
-						ImGui::Checkbox("Deathmatch", &Settings::Triggerbot::trigger_Deathmatch);
+						ImGui::Checkbox("deathmatch", &Settings::Triggerbot::trigger_Deathmatch);
 						ImGui::SameLine(SpaceLineOne);
-						ImGui::Checkbox("WallAttack", &Settings::Triggerbot::trigger_WallAttack);
+						ImGui::Checkbox("wall-attack", &Settings::Triggerbot::trigger_WallAttack);
 						ImGui::SameLine(SpaceLineTwo);
-						ImGui::Checkbox("FastZoom", &Settings::Triggerbot::trigger_FastZoom);
+						ImGui::Checkbox("fast-zoom", &Settings::Triggerbot::trigger_FastZoom);
 
-						ImGui::Checkbox("SmokCheck", &Settings::Triggerbot::trigger_SmokCheck);
+						ImGui::Checkbox("smoke check", &Settings::Triggerbot::trigger_SmokCheck);
 						ImGui::SameLine(SpaceLineOne);
-						ImGui::Checkbox("DrawFov", &Settings::Triggerbot::trigger_DrawFov);
+						ImGui::Checkbox("draw fov", &Settings::Triggerbot::trigger_DrawFov);
 						ImGui::SameLine(SpaceLineTwo);
-						ImGui::Checkbox("DrawSpot", &Settings::Triggerbot::trigger_DrawSpot);
+						ImGui::Checkbox("draw spot", &Settings::Triggerbot::trigger_DrawSpot);
 						ImGui::SameLine(SpaceLineThr);
-						ImGui::Checkbox("DrawFovAssist", &Settings::Triggerbot::trigger_DrawFovAssist);
+						ImGui::Checkbox("draw fov assist", &Settings::Triggerbot::trigger_DrawFovAssist);
 
 						ImGui::Spacing();
 						ImGui::Separator();
@@ -745,58 +745,58 @@ namespace Client
 
 						const char* items1[] = { CVAR_KEY_MOUSE3 , CVAR_KEY_MOUSE4 , CVAR_KEY_MOUSE5 };
 						ImGui::PushItemWidth(80.f);
-						ImGui::Combo("Key", &Settings::Triggerbot::trigger_Key, items1, IM_ARRAYSIZE(items1));
+						ImGui::Combo("key", &Settings::Triggerbot::trigger_Key, items1, IM_ARRAYSIZE(items1));
 						ImGui::PopItemWidth();
 						ImGui::SameLine();
 
-						const char* items2[] = { "Hold" , "Press" };
+						const char* items2[] = { "hold" , "press" };
 						ImGui::PushItemWidth(80.f);
-						ImGui::Combo("Key Mode", &Settings::Triggerbot::trigger_KeyMode, items2, IM_ARRAYSIZE(items2));
+						ImGui::Combo("key mode", &Settings::Triggerbot::trigger_KeyMode, items2, IM_ARRAYSIZE(items2));
 						ImGui::PopItemWidth();
 						ImGui::SameLine();
 
 						ImGui::PushItemWidth(110.f);
-						ImGui::Combo("Weapon", &iWeaponID, pWeaponData, IM_ARRAYSIZE(pWeaponData));
+						ImGui::Combo("weapon", &iWeaponID, pWeaponData, IM_ARRAYSIZE(pWeaponData));
 						ImGui::PopItemWidth();
 
 						ImGui::Spacing();
 						ImGui::Separator();
 						ImGui::Spacing();
 						ImGui::PushItemWidth(362.f);
-						ImGui::SliderInt("Min Disstance", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DistanceMin, 0, 5000);
-						ImGui::SliderInt("Max Disstance", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DistanceMax, 0, 5000);
-						ImGui::SliderInt("Fov", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_Fov, 1, 100);
-						ImGui::SliderInt("Delay Before", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DelayBefore, 0, 200);
-						ImGui::SliderInt("Delay After", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DelayAfter, 0, 1000);
+						ImGui::SliderInt("minimum distance", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DistanceMin, 0, 5000);
+						ImGui::SliderInt("maximum distance", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DistanceMax, 0, 5000);
+						ImGui::SliderInt("fov", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_Fov, 1, 100);
+						ImGui::SliderInt("delay before ", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DelayBefore, 0, 200);
+						ImGui::SliderInt("delay after", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_DelayAfter, 0, 1000);
 						ImGui::PopItemWidth();
 
 						ImGui::Spacing();
 						ImGui::Separator();
 						ImGui::Spacing();
 
-						ImGui::Checkbox("HeadOnly", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_HeadOnly);
+						ImGui::Checkbox("head only", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_HeadOnly);
 						ImGui::SameLine();
 
-						const char* AssistMode[] = { "Disable" , "One Shot" , "Auto" };
+						const char* AssistMode[] = { "disable" , "one-shot" , "auto" };
 						ImGui::PushItemWidth(80.f);
-						ImGui::Combo("Assist", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_Assist, AssistMode, IM_ARRAYSIZE(AssistMode));
+						ImGui::Combo("assist", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_Assist, AssistMode, IM_ARRAYSIZE(AssistMode));
 						ImGui::PopItemWidth();
 						ImGui::SameLine();
 
 
-						const char* AssistFovType[] = { "Dynamic" , "Static" };
+						const char* AssistFovType[] = { "dynamic" , "static" };
 						ImGui::PushItemWidth(80.f);
-						ImGui::Combo("Assist Fov Type", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_AssistFovType, AssistFovType, IM_ARRAYSIZE(AssistFovType));
+						ImGui::Combo("assist fov type", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_AssistFovType, AssistFovType, IM_ARRAYSIZE(AssistFovType));
 						ImGui::PopItemWidth();
 
-						const char* HitGroup[] = { "All" , "Head + Body" , "Head" };
-						ImGui::Combo("HitGroup", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_HitGroup, HitGroup, IM_ARRAYSIZE(HitGroup));
+						const char* HitGroup[] = { "all" , "head + body" , "head" };
+						ImGui::Combo("hit group", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_HitGroup, HitGroup, IM_ARRAYSIZE(HitGroup));
 						//ImGui::PopItemWidth();
 
 						ImGui::PushItemWidth(362.f);
-						ImGui::SliderInt("Assist Rcs", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_AssistRcs, 0, 100);
-						ImGui::SliderInt("Assist Fov", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_AssistFov, 1, 300);
-						ImGui::SliderInt("Assist Smooth", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_AssistSmooth, 1, 300);
+						ImGui::SliderInt("assist rcs", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_AssistRcs, 0, 100);
+						ImGui::SliderInt("assist fov", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_AssistFov, 1, 300);
+						ImGui::SliderInt("assist smooth", &Settings::Triggerbot::weapon_trigger_settings[iWeaponID].trigger_AssistSmooth, 1, 300);
 						ImGui::PopItemWidth();
 
 
@@ -1016,9 +1016,6 @@ namespace Client
 								ImGui::Checkbox("defusing esp", &Settings::Esp::esp_Defusing);
 								if (ImGui::IsItemHovered())
 									ImGui::SetTooltip("allows you to see if the enemy is defusing the bomb");
-								ImGui::Checkbox("ammo esp", &Settings::Esp::esp_Ammo);
-								if (ImGui::IsItemHovered())
-									ImGui::SetTooltip("renders text of amount of ammunition enemy has");
 
 							}
 							ImGui::EndChild(); //ends the child
@@ -1055,6 +1052,9 @@ namespace Client
 							ImGui::PushItemWidth(300.f); //item width
 							ImGui::BeginChild("fourth child", ImVec2(1200, 111), true); //begins the child and the size of the child.
 							{
+								ImGui::Checkbox("ammo esp", &Settings::Esp::esp_Ammo);
+								if (ImGui::IsItemHovered())
+									ImGui::SetTooltip("renders text of amount of ammunition enemy has");
 								ImGui::Checkbox("last build", &Settings::Esp::esp_Cheatbuild);
 								if (ImGui::IsItemHovered())
 									ImGui::SetTooltip("renders time of last compilation in top left of screen");
@@ -1118,8 +1118,8 @@ namespace Client
 							ImGui::Spacing();
 
 
-							ImGui::Checkbox("Asus Walls", &Settings::Esp::esp_AsusWalls);
-							ImGui::SliderInt("Walls Opacity", &Settings::Esp::esp_WallsOpacity, 0, 100);
+							ImGui::Checkbox("asus walls", &Settings::Esp::esp_AsusWalls);
+							ImGui::SliderInt("walls opacity	", &Settings::Esp::esp_WallsOpacity, 0, 100);
 
 							ImGui::Spacing();
 							ImGui::Separator();
@@ -1175,6 +1175,7 @@ namespace Client
 							string chams_1 = "None";
 							string chams_2 = "flat";
 							string chams_3 = "texture";
+
 
 							const char* items2[] = { visible_1.c_str() , visible_2.c_str() , visible_3.c_str() , visible_4.c_str() };
 
@@ -1307,11 +1308,11 @@ namespace Client
 						ImGui::Checkbox("bullet beams", &Settings::Esp::esp_beams_tracer);                              // Only for your own Bullets. You have to wait 15 Seconds after toggle it. Also its kind of buggy.
 						if (ImGui::IsItemHovered())
 							ImGui::SetTooltip("SMAC BAN, only renders for your own bullets");
-						ImGui::SliderFloat("Duration", &Settings::Esp::flTracersDuration, 0.f, 10.f, "%.2f");
+						ImGui::SliderFloat("duration", &Settings::Esp::flTracersDuration, 0.f, 10.f, "%.2f");
 						if (ImGui::IsItemHovered())
 							ImGui::SetTooltip("in seconds");
-						ImGui::SliderFloat("Width", &Settings::Esp::flTracersWidth, 0.f, 10.f, "%.2f");
-						ImGui::ColorEdit3("Beams Colour", Settings::Esp::flTracer_Beam);
+						ImGui::SliderFloat("width", &Settings::Esp::flTracersWidth, 0.f, 10.f, "%.2f");
+						ImGui::ColorEdit3("beams colour", Settings::Esp::flTracer_Beam);
 
 						ImGui::Spacing();
 						ImGui::Separator();
@@ -1530,15 +1531,15 @@ namespace Client
 
 						ImGui::Checkbox("punch", &Settings::Misc::misc_Punch);
 						if (ImGui::IsItemHovered())
-							ImGui::SetTooltip("draws small green dot to show where recoil is");
+							ImGui::SetTooltip("shows white crosshair to show where recoil is");
 						ImGui::SameLine(SpaceLineOne);
 						ImGui::Checkbox("sniper crosshair", &Settings::Misc::misc_AwpAim);
 						if (ImGui::IsItemHovered())
-							ImGui::SetTooltip("shows your ingame crosshair while holding a sniper");
+							ImGui::SetTooltip("shows your crosshair while holding a sniper");
 
 						ImGui::Spacing();
 
-						ImGui::Checkbox("static chat spam", &Settings::Misc::misc_spamregular);
+						ImGui::Checkbox("chat spam", &Settings::Misc::misc_spamregular);
 						if (ImGui::IsItemHovered())
 							ImGui::SetTooltip("trashtalks chat");
 						ImGui::SameLine(SpaceLineOne);
@@ -1710,7 +1711,7 @@ namespace Client
 						ImGui::Combo(("t model"), &Settings::Misc::customodelst, customModelst, ARRAYSIZE(customModelst));
 						}
 
-						if (ImGui::Button("Update"))
+						if (ImGui::Button("update"))
 						{
 						ForceFullUpdate();
 						}

@@ -1,11 +1,16 @@
-riptide 1.8 changelog (keeping this as 1.8 because i fixed errors that people were gettign)
+riptide 1.9 changelog
 
-- Fixed all the Errors
+=>	removed punch dot
+=>	added punch crosshair
+=>	added sniper aimbot only on scope (buggy)
+=>	made menu a bit bigger so it is easier to see everything
+=>	updated window flags for easier user interface
+=>	changed the fps counter in top left so it's nicer
+=>	edited a lot of tooltips for a better understanding
+=>	changed bool misc_fakeping to false so it doesnt start as on
+=>	made riptide no longer force sv_cheats to 1 so your console wont be spammed and achievements wont be disabled
 
 
-Note:   Extract the Custom Models and place them in your in SteamLibrary\steamapps\common\Counter-Strike Global Offensive\csgo\models\custom_player folder
-	You can change the Models in Esp.cpp at "void CEsp::CustomModels(CBaseEntity* entity)"
 
-Note:   Download more skyboxes at https://mega.nz/#!WIkWzC4a!WoiJgNyCM-EU9-etV2tZN2HuT1XC9JrBzgAX4yxPWFY
-	put skyboxes in SteamLibrary\steamapps\common\Counter-Strike Global Offensive\csgo\materials\skybox
-
+Happy Pasting,
+~british

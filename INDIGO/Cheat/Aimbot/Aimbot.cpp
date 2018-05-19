@@ -49,10 +49,10 @@ bool CAimbot::IsEnable()
 	if (!m_pLocal->WeaponAmmo || m_pLocal->bInReload)
 		return false;
 
-	if (m_pLocal->WeaponType > WEAPON_TYPE_SNIPER)
-		return false;
-
 	if (g_pTriggerbot && g_pTriggerbot->bTriggerAttack)
+		return false;
+	
+	if (m_pLocal->WeaponType == WEAPON_TYPE_SNIPER && !m_pLocal->m_pEntity->GetIsScoped())
 		return false;
 
 	return true;

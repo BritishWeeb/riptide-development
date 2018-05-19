@@ -1992,7 +1992,7 @@ void CEsp::OnDrawModelExecute(IMatRenderContext* ctx, const DrawModelState_t &st
 						ForceMaterial(TeamVisibleColor, visible_tex);
 						visible_tex->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, false);
 					}
-				}
+				}	
 			}
 		}
 	}

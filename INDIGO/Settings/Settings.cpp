@@ -2703,7 +2703,7 @@ namespace Settings
 		bool window_medalchanger;
 		bool window_inventorychanger;
 		int misc_fakeping_value = 0;
-		bool misc_fakeping = true;
+		bool misc_fakeping = false;
 		bool invalwayson = false;
 		bool custommodelson = false;
 		int customodelst;
